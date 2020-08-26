@@ -1,0 +1,27 @@
+name: livechat
+description: A livechat widget for your mobile application.
+version: 0.0.1
+author: mastersam
+homepage: https://github.com/mastersam07/livechat
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# The following section is specific to Flutter.
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: tech.mastersam.livechat
+        pluginClass: LivechatPlugin
+      # ios:
+      #   pluginClass: LivechatPlugin
