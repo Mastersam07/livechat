@@ -65,9 +65,9 @@ samples, guidance on mobile development, and a full API reference.
     <td align="center">
       <a href = "https://mastersam.tech/"><img src="https://avatars3.githubusercontent.com/u/31275429?s=460&u=b935d608a06c1604bae1d971e69a731480a27d46&v=4" width="72" alt="Mastersam" /></a>
       <p align="center">
-        <a href = "https://github.com/mastersam07"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="18" height = "18"/></a>
+        <a href = "https://github.com/mastersam07"><img src = "https://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="18" height = "18"/></a>
         <a href = "https://twitter.com/mastersam_"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="18" height="18"/></a>
-        <a href = "https://www.linkedin.com/in/abada-samuel/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="18" height="18"/></a>
+        <a href = "https://www.linkedin.com/in/abada-samuel/"><img src = "https://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="18" height="18"/></a>
       </p>
     </td>
   </tr> 

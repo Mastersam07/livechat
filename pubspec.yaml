@@ -1,8 +1,8 @@
 name: livechat
-description: A livechat widget for your mobile application.
-version: 0.0.1
+description: A livechat package widget for embedding mobile chat window in your mobile application.
+version: 0.0.3
 author: mastersam
-homepage: https://github.com/mastersam07/livechat
+homepage: https://mastersam.tech
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
