@@ -23,5 +23,5 @@ flutter:
       android:
         package: tech.mastersam.livechat
         pluginClass: LivechatPlugin
-      # ios:
-      #   pluginClass: LivechatPlugin
+      ios:
+        pluginClass: LivechatPlugin
