@@ -4,6 +4,10 @@ A livechat widget for your mobile application.
 
 ## 0.0.3
 
+* Fixes
+
+## 0.0.3
+
 * Fixed documentation
 
 ## 0.0.1

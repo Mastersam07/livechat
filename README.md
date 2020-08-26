@@ -6,7 +6,7 @@ A livechat widget for your mobile application.
 
 ```yaml
 dependencies:
-  livechat: "^0.0.1"
+  livechat: "^0.0.4"
 ```
 
 ### ⚡️ Import
