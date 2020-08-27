@@ -2,6 +2,10 @@
 
 A livechat widget for your mobile application.
 
+## 0.0.5
+
+* Make plugin available to ios
+
 ## 0.0.4
 
 * Fixes
