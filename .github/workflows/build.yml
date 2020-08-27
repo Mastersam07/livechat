@@ -65,25 +65,3 @@ jobs:
         run: flutter build apk
         working-directory: ./example
       - run: git diff --exit-code
-
-  build-ios:
-    name: Build ios client
-    needs: [format-and-lint]
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v1
-        with:
-          path: /Users/runner/hostedtoolcache/flutter
-          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: ${{ env.flutter_version }}
-      - name: Install dependencies
-        run: flutter pub get
-        working-directory: ./example
-      - name: Build
-        run: flutter build ios --no-codesign
-        working-directory: ./example
-      - run: git diff --exit-code
