@@ -3,15 +3,7 @@ name: CI
 on:
   push:
     branches: [ master ]
-    paths:
-      - '.github/workflows/**'
-      - 'example/**'
   pull_request:
-    branches: [ master ]
-    paths:
-      - './'
-      - '.github/workflows/**'
-      - 'example/**'
 
 env:
   flutter_version: "1.17.5"

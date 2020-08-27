@@ -13,7 +13,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechat: "^0.0.5"
+  livechat: "^1.0.0"
 ```
 
 ### ⚡️ Import
@@ -40,10 +40,29 @@ import 'package:livechat/livechat.dart';
 <activity android:name="com.livechatinc.inappchat.ChatWindowActivity" android:configChanges="orientation|screenSize" />
 ```
 
-### iOS - Manifest
->- Edit info.plist as shown below
+### iOS
+#### Requirements:
+> - iOS 9.0+
+> - Xcode 8.0+
+<!-- >- Edit info.plist as shown below -->
 
-#### Sending Files From Device Library
+#### Installation
+
+##### Carthage
+If you use Carthage to manage your dependencies, simply add 'livechat/chat-window-ios' to your Cartfile.
+```
+github "livechat/chat-window-ios" ~> 2.0.20
+```
+
+Ensure you have added LiveChat.framework to the "Linked Frameworks and Libraries" section of your target, and have include it in your Carthage framework copying build phase.
+
+##### CocoaPods
+If you use CocoaPods to manage your dependencies, simply add LiveChat to your Podfile.
+```podfile
+pod 'LiveChat', '~> 2.0.20'
+```
+
+##### Sending Files From Device Library
 ```plist
 <key>NSPhotoLibraryUsageDescription</key>
 <string>This app requires access to the photo library.</string>
@@ -73,7 +92,7 @@ If you encounter any problems feel free to open an issue. If you feel the librar
 missing a feature, please raise a ticket on Github and I'll look into it.
 Pull request are also welcome.
 
-### ❗️ Note
+## ❗️ Note
 
 This project is a starting point for a Flutter
 [plug-in package](https://flutter.dev/developing-packages/),
