@@ -160,7 +160,6 @@ class _SupportState extends State<Support> {
   }
 }
 
-
 /// Custom button
 class CustomButton extends StatelessWidget {
   final String title;

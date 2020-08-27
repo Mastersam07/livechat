@@ -43,6 +43,7 @@ jobs:
 
   build-android:
     name: Build android client
+    needs: [format-and-lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -67,6 +68,7 @@ jobs:
 
   build-ios:
     name: Build ios client
+    needs: [format-and-lint]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
