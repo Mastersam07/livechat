@@ -58,7 +58,7 @@ For more info, please, refer to the `main.dart` in the example.
 
 ### Views
 
-|<img src="assets/1.png" width="250">|<img src="assets/2.png" width="250">|
+|<img src="https://github.com/Mastersam07/livechat/raw/master/assets/1.png" width="250">|<img src="https://github.com/Mastersam07/livechat/raw/master/assets/2.png" width="250">|
 
 ## 🐛 Bugs/Requests
 
