@@ -1,5 +1,12 @@
 # 💬 livechat
 
+![CI](https://github.com/mastersam07/livechat/workflows/CI/badge.svg?style=flat-square)
+[![license](https://img.shields.io/badge/license-MIT-success.svg?style=flat-square)](https://github.com/Mastersam07/livechat/blob/master/LICENSE)
+[![pub package](https://img.shields.io/pub/v/livechat.svg?color=success&style=flat-square)](https://pub.dartlang.org/packages/livechat)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-success.svg?style=flat-square)](https://github.com/Mastersam07/livechat/pulls)
+![GitHub contributors](https://img.shields.io/github/contributors/mastersam07/livechat?color=success&style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/mastersam07/livechat?style=flat-square)
+
 A livechat package for embedding mobile chat window in your mobile application.
 
 ## 🎖 Installing
@@ -58,7 +65,7 @@ For more info, please, refer to the `main.dart` in the example.
 
 ### Views
 
-|<img src="https://github.com/Mastersam07/livechat/raw/master/assets/1.png" width="250">|<img src="https://github.com/Mastersam07/livechat/raw/master/assets/2.png" width="250">|
+<img src="https://github.com/Mastersam07/livechat/raw/master/assets/1.png" width="250"><img src="https://github.com/Mastersam07/livechat/raw/master/assets/2.png" width="250">
 
 ## 🐛 Bugs/Requests
 
@@ -77,14 +84,17 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
 
-## ☀️ Authors
-[<img src="https://avatars3.githubusercontent.com/u/31275429?s=460&u=b935d608a06c1604bae1d971e69a731480a27d46&v=4" width="120" />](https://mastersam.tech)
+## 🤓 Developer(s)
+
+[<img src="https://avatars3.githubusercontent.com/u/31275429?s=460&u=b935d608a06c1604bae1d971e69a731480a27d46&v=4" width="180" />](https://mastersam.tech)
+#### **Abada Samuel Oghenero**
 <p>
-<a href = "https://github.com/mastersam07"><img src = "https://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="18" height = "18"/></a>
-<a href = "https://twitter.com/mastersam_"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="18" height="18"/></a>
-<a href = "https://www.linkedin.com/in/abada-samuel/"><img src = "https://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="18" height="18"/></a>
+<a href="https://twitter.com/mastersam_"><img src="https://github.com/aritraroy/social-icons/blob/master/twitter-icon.png?raw=true" width="60"></a>
+<a href="https://linkedin.com/in/abada-samuel/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
+<a href="https://medium.com/@sammytech"><img src="https://github.com/aritraroy/social-icons/blob/master/medium-icon.png?raw=true" width="60"></a>
+<a href="https://facebook.com/abada.samueloghenero"><img src="https://github.com/aritraroy/social-icons/blob/master/facebook-icon.png?raw=true" width="60"></a>
 </p>
 
 ## ⭐️ License
 
-MIT License
+#### <a href="https://github.com/Mastersam07/livechat/blob/master/LICENSE">MIT LICENSE</a>
