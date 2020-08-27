@@ -2,6 +2,8 @@
 
 A livechat widget for your mobile application.
 
+## 1.0.0+1
+
 ## 1.0.0
 
 * Completed iOS documentation
