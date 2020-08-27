@@ -4,7 +4,7 @@ version: 0.0.5
 homepage: https://github.com/Mastersam07/livechat
 repository: https://github.com/Mastersam07/livechat
 issue_tracker: https://github.com/Mastersam07/livechat/issues
-documentation: https://chat.mastersam.tech
+documentation: https://github.com/Mastersam07/livechat
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
