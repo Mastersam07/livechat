@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'livechat'
-  s.version          = '0.0.5'
+  s.version          = '1.0.0+1'
   s.summary          = 'A livechat package for embedding mobile chat window in your mobile application.'
   s.description      = <<-DESC
   A livechat package for embedding mobile chat window in your mobile application.
@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
+  s.dependency 'LiveChat', '~> 2.0.20'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
