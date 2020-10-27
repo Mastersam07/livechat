@@ -13,13 +13,13 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechat: "^1.0.0+1"
+  livechatinc: "^1.0.1"
 ```
 
 ### ⚡️ Import
 
 ```dart
-import 'package:livechat/livechat.dart';
+import 'package:livechatinc/livechat.dart';
 ```
 
 ## 🎮 How To Use

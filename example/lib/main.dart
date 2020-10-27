@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:livechat/livechat.dart';
+import 'package:livechatinc/livechat.dart';
 
 void main() {
   runApp(MyApp());

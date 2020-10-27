@@ -58,7 +58,7 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
   private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
     this.context = applicationContext;
-    channel = new MethodChannel(messenger, "livechat");
+    channel = new MethodChannel(messenger, "livechatinc");
     channel.setMethodCallHandler(this);
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:livechat/livechat.dart';
+import 'package:livechatinc/livechat.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('livechat');

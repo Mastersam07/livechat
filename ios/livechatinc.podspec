@@ -3,8 +3,8 @@
 # Run `pod lib lint livechat.podspec' to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'livechat'
-  s.version          = '0.0.5'
+  s.name             = 'livechatinc'
+  s.version          = '1.0.1'
   s.summary          = 'A livechat package for embedding mobile chat window in your mobile application.'
   s.description      = <<-DESC
   A livechat package for embedding mobile chat window in your mobile application.
