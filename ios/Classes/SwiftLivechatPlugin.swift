@@ -4,7 +4,7 @@ import LiveChat
 
 public class SwiftLivechatPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "livechatinc", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "livechatt", binaryMessenger: registrar.messenger())
     let instance = SwiftLivechatPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
