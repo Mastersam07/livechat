@@ -13,7 +13,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechatinc: "^1.0.1"
+  livechat: "^1.0.1"
 ```
 
 ### ⚡️ Import
@@ -40,6 +40,19 @@ import 'package:livechatinc/livechatinc.dart';
 <activity android:name="com.livechatinc.inappchat.ChatWindowActivity" android:configChanges="orientation|screenSize" />
 ```
 
+### iOS - Manifest
+>- Edit info.plist as shown below
+
+#### Sending Files From Device Library
+```plist
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app requires access to the photo library.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app require access to the microphone.</string>
+<key>NSCameraUsageDescription</key>
+<string>This app requires access to the camera.</string>
+```
+
 ### Dart Usage
 
 ```dart
@@ -60,7 +73,7 @@ If you encounter any problems feel free to open an issue. If you feel the librar
 missing a feature, please raise a ticket on Github and I'll look into it.
 Pull request are also welcome.
 
-## ❗️ Note
+### ❗️ Note
 
 This project is a starting point for a Flutter
 [plug-in package](https://flutter.dev/developing-packages/),
