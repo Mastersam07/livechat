@@ -19,7 +19,7 @@ dependencies:
 ### ⚡️ Import
 
 ```dart
-import 'package:livechatinc/livechat.dart';
+import 'package:livechatinc/livechatinc.dart';
 ```
 
 ## 🎮 How To Use
