@@ -1,4 +1,4 @@
-name: CI
+name: Client builds
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
   pull_request:
 
 env:
-  flutter_version: "1.17.5"
-  java_version: "12.x"
+  flutter_version: "2.0.4"
+  java_version: "8.x"
 
 jobs:
   format-and-lint:
