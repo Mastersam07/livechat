@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'livechatt'
-  s.version          = '1.0.1+3'
+  s.version          = '1.1.0'
   s.summary          = 'A livechat package for embedding mobile chat window in your mobile application.'
   s.description      = <<-DESC
   A livechat package for embedding mobile chat window in your mobile application.
