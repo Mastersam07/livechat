@@ -1,6 +1,9 @@
 # ChangeLog for livechat
 
-A livechat widget for your mobile application.
+## 1.1.0
+
+* Fixed pod install issues.
+* Fixed podspec issues.
 
 ## 1.0.1+3
 
