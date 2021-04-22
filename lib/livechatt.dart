@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class Livechat {
-  static const MethodChannel _channel = const MethodChannel('livechatinc');
+  static const MethodChannel _channel = const MethodChannel('livechatt');
 
   /// Get platform version
   static Future<String> get platformVersion async {

@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  livechatinc:
+  livechatt:
     # When depending on this package from a real application you should use:
     #   livechat: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints

@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/mastersam07/livechat/workflows/CI/badge.svg?style=flat-square)
 [![license](https://img.shields.io/badge/license-MIT-success.svg?style=flat-square)](https://github.com/Mastersam07/livechat/blob/master/LICENSE)
-[![pub package](https://img.shields.io/pub/v/livechat.svg?color=success&style=flat-square)](https://pub.dartlang.org/packages/livechat)
+[![pub package](https://img.shields.io/pub/v/livechatt.svg?color=success&style=flat-square)](https://pub.dartlang.org/packages/livechatt)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-success.svg?style=flat-square)](https://github.com/Mastersam07/livechat/pulls)
 ![GitHub contributors](https://img.shields.io/github/contributors/mastersam07/livechat?color=success&style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/mastersam07/livechat?style=flat-square)
@@ -13,13 +13,13 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechat: "^1.0.1"
+  livechatt: "^1.0.1+3"
 ```
 
 ### ⚡️ Import
 
 ```dart
-import 'package:livechatinc/livechatinc.dart';
+import 'package:livechatt/livechatt.dart';
 ```
 
 ## 🎮 How To Use

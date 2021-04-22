@@ -2,6 +2,16 @@
 
 A livechat widget for your mobile application.
 
+## 1.0.1+3
+
+* Fixed No podspec found on iOS
+
+## 1.0.1+2
+
+## 1.0.1+1
+
+* Fixed issue with plugin name
+
 ## 1.0.1
 
 * Fixed conflict with pods on ios
