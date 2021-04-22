@@ -87,7 +87,7 @@ class _SupportState extends State<Support> {
                 TextFormField(
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
-                    WhitelistingTextInputFormatter.digitsOnly
+                    FilteringTextInputFormatter.digitsOnly
                   ],
                   controller: licenseNoTextController,
                 ),
@@ -180,7 +180,7 @@ class CustomButton extends StatelessWidget {
           color: Colors.blue[500],
           borderRadius: BorderRadius.circular(4),
         ),
-        child: FlatButton(
+        child: TextButton(
           onPressed: () {
             onPress();
           },

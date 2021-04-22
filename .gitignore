@@ -9,3 +9,7 @@ build/
 .idea/
 _docpress/
 *.zip
+
+#credentials
+credentials.json
+.vscode/
