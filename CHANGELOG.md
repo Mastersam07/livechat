@@ -1,5 +1,9 @@
 # ChangeLog for livechat
 
+## 1.2.0
+
+* Migrated to null safety.
+
 ## 1.1.0
 
 * Fixed pod install issues.

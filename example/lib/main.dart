@@ -26,7 +26,7 @@ class Support extends StatefulWidget {
 }
 
 class _SupportState extends State<Support> {
-  String _platformVersion = 'Unknown';
+  String? _platformVersion = 'Unknown';
   final licenseNoTextController = TextEditingController();
   final groupIdTextController = TextEditingController();
   final visitorNameTextController = TextEditingController();
@@ -40,7 +40,7 @@ class _SupportState extends State<Support> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    String platformVersion;
+    String? platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       platformVersion = await Livechat.platformVersion;
@@ -166,9 +166,9 @@ class CustomButton extends StatelessWidget {
   final Function() onPress;
 
   CustomButton({
-    Key key,
-    @required this.title,
-    @required this.onPress,
+    Key? key,
+    required this.title,
+    required this.onPress,
   });
 
   @override
