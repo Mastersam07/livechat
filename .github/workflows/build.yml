@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
+    branches: [ master ]
 
 env:
   flutter_version: "2.0.4"
@@ -32,6 +33,13 @@ jobs:
         run: flutter format --dry-run . --set-exit-if-changed
       - name: Lint analysis
         run: flutter analyze --no-pub
+      - name: Run tests
+        run: flutter test --coverage
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1.2.1
+        with:
+          file: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build-android:
     name: Build android client

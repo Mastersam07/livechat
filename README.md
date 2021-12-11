@@ -1,5 +1,6 @@
 # 💬 livechat
 
+[![codecov](https://codecov.io/gh/Mastersam07/livechat/branch/master/graph/badge.svg?token=5J2EA3Q5JJ)](https://codecov.io/gh/Mastersam07/livechat)
 ![CI](https://github.com/mastersam07/livechat/workflows/CI/badge.svg?style=flat-square)
 [![license](https://img.shields.io/badge/license-MIT-success.svg?style=flat-square)](https://github.com/Mastersam07/livechat/blob/master/LICENSE)
 [![pub package](https://img.shields.io/pub/v/livechatt.svg?color=success&style=flat-square)](https://pub.dartlang.org/packages/livechatt)
