@@ -12,8 +12,9 @@ class Livechat {
   }
 
   /// Begin chat by invoking method channel
-  static Future<void> beginChat(String licenseNo, String groupId,
-      String visitorName, String visitorEmail, [Map<String, String>? customParams]) async {
+  static Future<void> beginChat(
+      String licenseNo, String groupId, String visitorName, String visitorEmail,
+      [Map<String, String>? customParams]) async {
     await _channel.invokeMethod('beginChat', <String, dynamic>{
       'licenseNo': licenseNo,
       'groupId': groupId,

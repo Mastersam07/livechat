@@ -44,8 +44,8 @@ void main() {
   });
 
   test('can begin chat with plugin with customParams', () async {
-    await Livechat.beginChat(
-        'licenseNo', 'groupId', 'visitorName', 'visitorEmail', {'organization': 'mastersam.xyz'});
+    await Livechat.beginChat('licenseNo', 'groupId', 'visitorName',
+        'visitorEmail', {'organization': 'mastersam.xyz'});
     expect(log, <Matcher>[
       isMethodCall(
         'beginChat',
