@@ -1,5 +1,10 @@
 # ChangeLog for livechat
 
+## 1.3.0
+
+* Bump native dependencies.
+* Unit tests.
+
 ## 1.2.0
 
 * Migrated to null safety.
