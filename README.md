@@ -14,7 +14,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechatt: "^1.2.0"
+  livechatt: "^1.3.0"
 ```
 
 ### ⚡️ Import
@@ -42,6 +42,8 @@ import 'package:livechatt/livechatt.dart';
 ```
 
 ### iOS - Manifest
+>- Set minimum deployment target of iOS to 11.0
+
 >- Edit info.plist as shown below
 
 #### Sending Files From Device Library
@@ -52,6 +54,20 @@ import 'package:livechatt/livechatt.dart';
 <string>This app require access to the microphone.</string>
 <key>NSCameraUsageDescription</key>
 <string>This app requires access to the camera.</string>
+```
+
+#### Having issues running on ios?
+Add the below to your podfile
+
+```podfile
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+    end
+  end
+end
 ```
 
 ### Dart Usage
