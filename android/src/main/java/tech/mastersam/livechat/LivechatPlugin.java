@@ -25,6 +25,13 @@ import com.livechatinc.inappchat.ChatWindowErrorType;
 import com.livechatinc.inappchat.ChatWindowView;
 import com.livechatinc.inappchat.models.NewMessageModel;
 
+import java.util.HashMap;
+
+/// Implement chat bubble
+// import com.google.android.material.floatingactionbutton.FloatingActionButton;
+// import com.livechatinc.inappchat.ChatWindowEventsListener;
+// import com.livechatinc.inappchat.ChatWindowUtils;
+
 /** LivechatPlugin */
 public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware{
   /// The MethodChannel that will the communication between Flutter and native Android
@@ -68,6 +75,7 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     } else if (call.method.equals("beginChat")) {
       final String licenseNo = call.argument("licenseNo");
+      final HashMap<String,String> customParams = call.argument("customParams");
       final String groupId = call.argument("groupId");
       final String visitorName = call.argument("visitorName");
       final String visitorEmail = call.argument("visitorEmail");
@@ -83,12 +91,15 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
         Bundle config = new ChatWindowConfiguration.Builder()
                 .setLicenceNumber(licenseNo)
                 .setGroupId(groupId)
+                .setVisitorName(visitorName)
+                .setVisitorEmail(visitorEmail)
+                .setCustomParams(customParams)
                 .build()
                 .asBundle();
-        intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_GROUP_ID, licenseNo);
-        intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_LICENCE_NUMBER, groupId);
-        intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_NAME, visitorName);
-        intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_EMAIL, visitorEmail);
+        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_GROUP_ID, licenseNo);
+        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_LICENCE_NUMBER, groupId);
+        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_NAME, visitorName);
+        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_EMAIL, visitorEmail);
         intent.putExtras(config);
         activity.startActivity(intent);
 

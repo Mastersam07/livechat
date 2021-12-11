@@ -26,7 +26,7 @@ void main() {
     expect(await Livechat.platformVersion, '42');
   });
 
-  test('can begin chat with plugin', () async {
+  test('can begin chat with plugin without customParams', () async {
     await Livechat.beginChat(
         'licenseNo', 'groupId', 'visitorName', 'visitorEmail');
     expect(log, <Matcher>[
@@ -37,6 +37,24 @@ void main() {
           'groupId': 'groupId',
           'visitorName': 'visitorName',
           'visitorEmail': 'visitorEmail',
+          'customParams': null,
+        },
+      ),
+    ]);
+  });
+
+  test('can begin chat with plugin with customParams', () async {
+    await Livechat.beginChat(
+        'licenseNo', 'groupId', 'visitorName', 'visitorEmail', {'organization': 'mastersam.xyz'});
+    expect(log, <Matcher>[
+      isMethodCall(
+        'beginChat',
+        arguments: <String, dynamic>{
+          'licenseNo': 'licenseNo',
+          'groupId': 'groupId',
+          'visitorName': 'visitorName',
+          'visitorEmail': 'visitorEmail',
+          'customParams': {'organization': 'mastersam.xyz'},
         },
       ),
     ]);
@@ -56,7 +74,7 @@ void main() {
     expect(await channel.invokeMethod('getPlatformVersion'), '42');
   });
 
-  test("can begin chat natively", () async {
+  test("can begin chat natively without customParams", () async {
     channel.invokeMethod('beginChat', <String, dynamic>{
       'licenseNo': 'licenseNo',
       'groupId': 'groupId',
@@ -71,6 +89,28 @@ void main() {
           'groupId': 'groupId',
           'visitorName': 'visitorName',
           'visitorEmail': 'visitorEmail',
+        },
+      ),
+    ]);
+  });
+
+  test("can begin chat natively with customParams", () async {
+    channel.invokeMethod('beginChat', <String, dynamic>{
+      'licenseNo': 'licenseNo',
+      'groupId': 'groupId',
+      'visitorName': 'visitorName',
+      'visitorEmail': 'visitorEmail',
+      'customParams': {'organization': 'mastersam.xyz'},
+    });
+    expect(log, <Matcher>[
+      isMethodCall(
+        'beginChat',
+        arguments: <String, dynamic>{
+          'licenseNo': 'licenseNo',
+          'groupId': 'groupId',
+          'visitorName': 'visitorName',
+          'visitorEmail': 'visitorEmail',
+          'customParams': {'organization': 'mastersam.xyz'},
         },
       ),
     ]);

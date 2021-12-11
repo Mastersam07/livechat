@@ -31,6 +31,8 @@ class _SupportState extends State<Support> {
   final groupIdTextController = TextEditingController();
   final visitorNameTextController = TextEditingController();
   final visitorEmailTextController = TextEditingController();
+  final organizationTextController = TextEditingController();
+  final positionTextController = TextEditingController();
 
   @override
   void initState() {
@@ -136,13 +138,44 @@ class _SupportState extends State<Support> {
                 SizedBox(
                   height: 10,
                 ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Organization",
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: organizationTextController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Position",
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: positionTextController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 CustomButton(
                   onPress: () {
                     Livechat.beginChat(
                         licenseNoTextController.text,
                         groupIdTextController.text,
                         visitorNameTextController.text,
-                        visitorEmailTextController.text);
+                        visitorEmailTextController.text, <String, String>{
+                      'org': organizationTextController.text,
+                      'position': positionTextController.text
+                    });
                   },
                   title: "Start Live Chat",
                 ),
