@@ -1,5 +1,9 @@
 # ChangeLog for livechat
 
+## 1.4.0
+
+* Add support for custom params.
+
 ## 1.3.0
 
 * Bump native dependencies.
