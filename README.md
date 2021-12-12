@@ -14,7 +14,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechatt: "^1.3.0"
+  livechatt: "^1.4.0"
 ```
 
 ### ⚡️ Import
@@ -72,9 +72,24 @@ end
 
 ### Dart Usage
 
+- Regular usage
+
 ```dart
 onPressed: (){
     Livechat.beginChat(LICENSE_NO, GROUP_ID, VISITOR_NAME, VISITOR_EMAIL);
+    },
+```
+
+- Cases where there are custom parameters
+
+```dart
+var cmap = <String, String>{
+    'org': 'organizationTextController.text',
+    'position': 'positionTextController.text'
+  };
+
+onPressed: (){
+    Livechat.beginChat(LICENSE_NO, GROUP_ID, VISITOR_NAME, VISITOR_EMAIL, cmap);
     },
 ```
 

@@ -20,8 +20,10 @@ jobs:
             "refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}",
             "tokenEndpoint":"https://accounts.google.com/o/oauth2/token",
             "scopes": [ "openid", "https://www.googleapis.com/auth/userinfo.email" ],
-            "expiration": 1603814695612
+            "expiration": ${{ secrets.EXPIRATION }}
           }
           EOF
+      - name: Check Publish Warnings
+        run: pub publish --dry-run
       - name: Publish package
         run: pub publish -f
