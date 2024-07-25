@@ -27,7 +27,7 @@ android {
         namespace 'tech.mastersam.livechat'
     }
     
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
