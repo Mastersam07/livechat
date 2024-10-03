@@ -49,6 +49,9 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
             case "beginChat":
                 handleBeginChat(call, result);
                 break;
+            case "clearSession":
+                clearChatSession(result);
+                break;
             default:
                 result.notImplemented();
                 break;
@@ -81,6 +84,51 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
             Intent intent = new Intent(activity, com.livechatinc.inappchat.ChatWindowActivity.class);
             Bundle config = buildChatConfig(licenseNo, groupId, visitorName, visitorEmail, customParams);
             intent.putExtras(config);
+
+            // Set up the event listener for chat events
+            windowView = ChatWindowUtils.createAndAttachChatWindowInstance(activity);
+            windowView.setConfiguration(config);
+            windowView.setEventsListener(new ChatWindowEventsListener() {
+                @Override
+                public void onNewMessage(NewMessageModel message) {
+                    // Notify Flutter about the new message
+                    HashMap<String, Object> messageData = new HashMap<>();
+                    messageData.put("text", message.getText());
+                    channel.invokeMethod("onNewMessage", messageData);
+                }
+
+                @Override
+                public void onChatWindowVisibilityChanged(boolean visible) {
+                    channel.invokeMethod("onChatVisibilityChanged", visible);
+                }
+
+                @Override
+                public void onStartFilePickerActivity(Intent intent, int requestCode) {
+                    activity.startActivityForResult(intent, requestCode);
+                }
+
+                @Override
+                public void onRequestAudioPermissions(String[] permissions, int requestCode) {
+                    ActivityCompat.requestPermissions(activity, permissions, requestCode);
+                }
+
+                @Override
+                public boolean onError(ChatWindowErrorType errorType, int errorCode, String errorDescription) {
+                    HashMap<String, Object> errorData = new HashMap<>();
+                    errorData.put("errorType", errorType.toString());
+                    errorData.put("errorCode", errorCode);
+                    errorData.put("errorDescription", errorDescription);
+                    channel.invokeMethod("onError", errorData);
+                    return true; 
+                }
+
+                @Override
+                public boolean handleUri(Uri uri) {
+                    channel.invokeMethod("handleUri", uri.toString());
+                    return true;
+                }
+            });
+
             activity.startActivity(intent);
             result.success(null);
         } catch (Exception e) {
@@ -97,6 +145,14 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 .setCustomParams(customParams)
                 .build()
                 .asBundle();
+    }
+
+    private void clearChatSession(Result result) {
+        ChatWindowUtils.clearSession(activity);
+        if (windowView != null) {
+            windowView.reload(false);
+        }
+        result.success(null);
     }
 
     @Override
