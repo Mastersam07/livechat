@@ -17,78 +17,79 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-/// Files imported from livechat android sdk
 import com.livechatinc.inappchat.ChatWindowConfiguration;
-import com.livechatinc.inappchat.ChatWindowErrorType;
 import com.livechatinc.inappchat.ChatWindowView;
-import com.livechatinc.inappchat.models.NewMessageModel;
 
 import java.util.HashMap;
 
-/// Implement chat bubble
-// import com.google.android.material.floatingactionbutton.FloatingActionButton;
-// import com.livechatinc.inappchat.ChatWindowEventsListener;
-// import com.livechatinc.inappchat.ChatWindowUtils;
+public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
+    private MethodChannel channel;
+    private Context context;
+    private Activity activity;
+    private ChatWindowView windowView;
 
-/** LivechatPlugin */
-public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware{
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  Activity activity;
-  private Context context;
-  ChatWindowConfiguration config = null;
-  ChatWindowView windowView = null;
-  private MethodChannel channel;
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        this.context = flutterPluginBinding.getApplicationContext();
+        setupChannel(flutterPluginBinding.getBinaryMessenger());
+    }
 
-  // This static function is optional and equivalent to onAttachedToEngine. It supports the old
-  // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
-  // plugin registration via this function while apps migrate to use the new Android APIs
-  // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
-  //
-  // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
-  // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
-  // depending on the user's project. onAttachedToEngine or registerWith must both be defined
-  // in the same class.
-  public static void registerWith(Registrar registrar) {
-    final LivechatPlugin instance = new LivechatPlugin();
-    instance.onAttachedToEngine(registrar.context(), registrar.messenger());
-  }
+    private void setupChannel(BinaryMessenger messenger) {
+        channel = new MethodChannel(messenger, "livechatt");
+        channel.setMethodCallHandler(this);
+    }
 
-  @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    onAttachedToEngine(flutterPluginBinding.getApplicationContext(), flutterPluginBinding.getBinaryMessenger());
-  }
+    @Override
+    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+        switch (call.method) {
+            case "getPlatformVersion":
+                result.success("Android " + android.os.Build.VERSION.RELEASE);
+                break;
+            case "beginChat":
+                handleBeginChat(call, result);
+                break;
+            default:
+                result.notImplemented();
+                break;
+        }
+    }
 
-  private void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
-    this.context = applicationContext;
-    channel = new MethodChannel(messenger, "livechatt");
-    channel.setMethodCallHandler(this);
-  }
+    private void handleBeginChat(@NonNull MethodCall call, @NonNull Result result) {
+        final String licenseNo = call.argument("licenseNo");
+        final HashMap<String, String> customParams = call.argument("customParams");
+        final String groupId = call.argument("groupId");
+        final String visitorName = call.argument("visitorName");
+        final String visitorEmail = call.argument("visitorEmail");
 
-  @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else if (call.method.equals("beginChat")) {
-      final String licenseNo = call.argument("licenseNo");
-      final HashMap<String,String> customParams = call.argument("customParams");
-      final String groupId = call.argument("groupId");
-      final String visitorName = call.argument("visitorName");
-      final String visitorEmail = call.argument("visitorEmail");
+        if (licenseNo == null || licenseNo.trim().isEmpty()) {
+            result.error("LICENSE_ERROR", "License number cannot be empty", null);
+            return;
+        }
 
-      if (licenseNo.trim().equalsIgnoreCase("")) {
-        result.error("LICENSE NUMBER EMPTY", null, null);
-      }else if (visitorName.trim().equalsIgnoreCase("")) {
-        result.error("VISITOR NAME EMPTY", null, null);
-      }else if (visitorEmail.trim().equalsIgnoreCase("")) {
-        result.error("VISITOR EMAIL EMPTY", null, null);
-      }else{
-        Intent intent = new Intent(activity, com.livechatinc.inappchat.ChatWindowActivity.class);
-        Bundle config = new ChatWindowConfiguration.Builder()
+        if (visitorName == null || visitorName.trim().isEmpty()) {
+            result.error("VISITOR_NAME_ERROR", "Visitor name cannot be empty", null);
+            return;
+        }
+
+        if (visitorEmail == null || visitorEmail.trim().isEmpty()) {
+            result.error("VISITOR_EMAIL_ERROR", "Visitor email cannot be empty", null);
+            return;
+        }
+
+        try {
+            Intent intent = new Intent(activity, com.livechatinc.inappchat.ChatWindowActivity.class);
+            Bundle config = buildChatConfig(licenseNo, groupId, visitorName, visitorEmail, customParams);
+            intent.putExtras(config);
+            activity.startActivity(intent);
+            result.success(null);
+        } catch (Exception e) {
+            result.error("CHAT_WINDOW_ERROR", "Failed to start chat window", e);
+        }
+    }
+
+    private Bundle buildChatConfig(String licenseNo, String groupId, String visitorName, String visitorEmail, HashMap<String, String> customParams) {
+        return new ChatWindowConfiguration.Builder()
                 .setLicenceNumber(licenseNo)
                 .setGroupId(groupId)
                 .setVisitorName(visitorName)
@@ -96,42 +97,35 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 .setCustomParams(customParams)
                 .build()
                 .asBundle();
-        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_GROUP_ID, licenseNo);
-        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_LICENCE_NUMBER, groupId);
-        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_NAME, visitorName);
-        // intent.putExtra(com.livechatinc.inappchat.ChatWindowConfiguration.KEY_VISITOR_EMAIL, visitorEmail);
-        intent.putExtras(config);
-        activity.startActivity(intent);
-
-        result.success(null);
-      }
-    } else {
-      result.notImplemented();
     }
-  }
 
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        this.activity = binding.getActivity();
+    }
 
-  }
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        teardownChannel();
+    }
 
-  @Override
-  public void onAttachedToActivity(ActivityPluginBinding activityPluginBinding) {
-    activity = activityPluginBinding.getActivity();
-  }
+    private void teardownChannel() {
+        if (channel != null) {
+            channel.setMethodCallHandler(null);
+            channel = null;
+        }
+    }
 
-  @Override
-  public void onDetachedFromActivity() {
+    @Override
+    public void onDetachedFromActivity() {
+        this.activity = null;
+    }
 
-  }
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {}
 
-  @Override
-  public void onDetachedFromActivityForConfigChanges() {
-
-  }
-
-  @Override
-  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding activityPluginBinding) {
-
-  }
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+        this.activity = binding.getActivity();
+    }
 }

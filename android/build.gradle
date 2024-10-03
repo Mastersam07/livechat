@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
 
@@ -23,10 +23,10 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -34,5 +34,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.livechat:chat-window-android:v2.2.1'
+    implementation 'com.github.livechat:chat-window-android:v2.3.4'
 }
