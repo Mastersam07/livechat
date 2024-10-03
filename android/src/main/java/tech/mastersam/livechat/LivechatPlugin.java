@@ -17,17 +17,23 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
 
 import com.livechatinc.inappchat.ChatWindowConfiguration;
+import com.livechatinc.inappchat.ChatWindowErrorType;
 import com.livechatinc.inappchat.ChatWindowView;
+import com.livechatinc.inappchat.models.NewMessageModel;
 
 import java.util.HashMap;
 
 public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
-    private MethodChannel channel;
+    private MethodChannel methodChannel;
+    private EventChannel eventChannel;
     private Context context;
     private Activity activity;
     private ChatWindowView windowView;
+    private EventChannel.EventSink events;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -36,8 +42,21 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
     }
 
     private void setupChannel(BinaryMessenger messenger) {
-        channel = new MethodChannel(messenger, "livechatt");
-        channel.setMethodCallHandler(this);
+        methodChannel = new MethodChannel(messenger, "livechatt");
+        methodChannel.setMethodCallHandler(this);
+
+        eventChannel = new EventChannel(messenger, "livechatt/events");
+        eventChannel.setStreamHandler(new StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink eventSink) {
+                events = eventSink;  // Capture the event sink for pushing events later
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+                events = null;  // Clear the event sink when not in use
+            }
+        });
     }
 
     @Override
@@ -94,12 +113,14 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                     // Notify Flutter about the new message
                     HashMap<String, Object> messageData = new HashMap<>();
                     messageData.put("text", message.getText());
-                    channel.invokeMethod("onNewMessage", messageData);
+                    events.success(messageData);
                 }
 
                 @Override
                 public void onChatWindowVisibilityChanged(boolean visible) {
-                    channel.invokeMethod("onChatVisibilityChanged", visible);
+                    if (events != null) {
+                        events.success("onChatWindowVisibilityChanged: " + visible);
+                    }
                 }
 
                 @Override
@@ -114,17 +135,21 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
                 @Override
                 public boolean onError(ChatWindowErrorType errorType, int errorCode, String errorDescription) {
-                    HashMap<String, Object> errorData = new HashMap<>();
-                    errorData.put("errorType", errorType.toString());
-                    errorData.put("errorCode", errorCode);
-                    errorData.put("errorDescription", errorDescription);
-                    channel.invokeMethod("onError", errorData);
+                    if (events != null) {
+                        HashMap<String, Object> errorData = new HashMap<>();
+                        errorData.put("errorType", errorType.toString());
+                        errorData.put("errorCode", errorCode);
+                        errorData.put("errorDescription", errorDescription);
+                        events.success(errorData);  // Push error event to Flutter
+                    }
                     return true; 
                 }
 
                 @Override
                 public boolean handleUri(Uri uri) {
-                    channel.invokeMethod("handleUri", uri.toString());
+                     if (events != null) {
+                        events.success("handleUri: " + uri.toString());
+                    }
                     return true;
                 }
             });
@@ -162,13 +187,16 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        teardownChannel();
+        teardownChannels();
     }
 
-    private void teardownChannel() {
-        if (channel != null) {
-            channel.setMethodCallHandler(null);
-            channel = null;
+    private void teardownChannels() {
+        if (methodChannel != null) {
+            methodChannel.setMethodCallHandler(null);
+            methodChannel = null;
+        }
+        if (eventChannel != null) {
+            eventChannel.setStreamHandler(null);
         }
     }
 
