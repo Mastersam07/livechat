@@ -1,6 +1,7 @@
 package tech.mastersam.livechat;
 
 import android.content.Intent;
+import androidx.core.app.ActivityCompat;
 import android.os.Bundle;
 import android.widget.Toast;
 import android.app.Activity;
@@ -25,6 +26,15 @@ import com.livechatinc.inappchat.ChatWindowErrorType;
 import com.livechatinc.inappchat.ChatWindowView;
 import com.livechatinc.inappchat.models.NewMessageModel;
 
+import com.livechatinc.inappchat.ChatWindowEventsListener;
+import com.livechatinc.inappchat.ChatWindowUtils;
+
+// import io.flutter.plugin.platform.PlatformViewFactory;
+// import io.flutter.plugin.platform.PlatformView;
+// import io.flutter.plugin.common.StandardMessageCodec;
+
+import android.net.Uri;
+
 import java.util.HashMap;
 
 public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -39,6 +49,9 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         this.context = flutterPluginBinding.getApplicationContext();
         setupChannel(flutterPluginBinding.getBinaryMessenger());
+
+        // Register the embedded chat view
+        flutterPluginBinding.getPlatformViewRegistry().registerViewFactory("embedded_chat_view", new EmbeddedChatViewFactory());
     }
 
     private void setupChannel(BinaryMessenger messenger) {
@@ -89,30 +102,26 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
             return;
         }
 
-        if (visitorName == null || visitorName.trim().isEmpty()) {
-            result.error("VISITOR_NAME_ERROR", "Visitor name cannot be empty", null);
-            return;
-        }
-
-        if (visitorEmail == null || visitorEmail.trim().isEmpty()) {
-            result.error("VISITOR_EMAIL_ERROR", "Visitor email cannot be empty", null);
-            return;
-        }
-
         try {
-            Intent intent = new Intent(activity, com.livechatinc.inappchat.ChatWindowActivity.class);
-            Bundle config = buildChatConfig(licenseNo, groupId, visitorName, visitorEmail, customParams);
-            intent.putExtras(config);
+            ChatWindowConfiguration config = buildChatConfig(licenseNo, groupId, visitorName, visitorEmail, customParams);
 
             // Set up the event listener for chat events
             windowView = ChatWindowUtils.createAndAttachChatWindowInstance(activity);
             windowView.setConfiguration(config);
             windowView.setEventsListener(new ChatWindowEventsListener() {
                 @Override
-                public void onNewMessage(NewMessageModel message) {
+                public void onWindowInitialized() {
+                    if (events != null) {
+                        events.success("onWindowInitialized");
+                    }
+                }
+
+                @Override
+                public void onNewMessage(NewMessageModel message, boolean windowVisible) {
                     // Notify Flutter about the new message
                     HashMap<String, Object> messageData = new HashMap<>();
                     messageData.put("text", message.getText());
+                    messageData.put("windowVisible", windowVisible);
                     events.success(messageData);
                 }
 
@@ -154,22 +163,20 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 }
             });
 
-            activity.startActivity(intent);
             result.success(null);
         } catch (Exception e) {
             result.error("CHAT_WINDOW_ERROR", "Failed to start chat window", e);
         }
     }
 
-    private Bundle buildChatConfig(String licenseNo, String groupId, String visitorName, String visitorEmail, HashMap<String, String> customParams) {
+    private ChatWindowConfiguration buildChatConfig(String licenseNo, String groupId, String visitorName, String visitorEmail, HashMap<String, String> customParams) {
         return new ChatWindowConfiguration.Builder()
                 .setLicenceNumber(licenseNo)
                 .setGroupId(groupId)
                 .setVisitorName(visitorName)
                 .setVisitorEmail(visitorEmail)
                 .setCustomParams(customParams)
-                .build()
-                .asBundle();
+                .build();
     }
 
     private void clearChatSession(Result result) {
