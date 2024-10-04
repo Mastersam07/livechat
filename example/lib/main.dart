@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LiveChat',
-      home: EmbeddedChatWidget(),
+      home: Support(),
     );
   }
 }
@@ -37,9 +37,6 @@ class _SupportState extends State<Support> {
   void initState() {
     super.initState();
     initPlatformState();
-    Livechat.chatEvents.listen((message) {
-      print('New message: $message');
-    });
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
