@@ -171,13 +171,15 @@ class _SupportState extends State<Support> {
                 CustomButton(
                   onPress: () {
                     Livechat.beginChat(
-                        licenseNoTextController.text,
-                        groupIdTextController.text,
-                        visitorNameTextController.text,
-                        visitorEmailTextController.text, <String, String>{
-                      'org': organizationTextController.text,
-                      'position': positionTextController.text
-                    });
+                      licenseNoTextController.text,
+                      groupId: groupIdTextController.text,
+                      visitorName: visitorNameTextController.text,
+                      visitorEmail: visitorEmailTextController.text,
+                      customParams: <String, String>{
+                        'org': organizationTextController.text,
+                        'position': positionTextController.text
+                      },
+                    );
                   },
                   title: "Start Live Chat",
                 ),

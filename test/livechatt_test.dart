@@ -17,8 +17,6 @@ void main() {
       if (a.length != b.length) return false;
       for (final key in a.keys) {
         if (!b.containsKey(key) || !deepEqual(a[key], b[key])) {
-          print(
-              'Key: $key does not match. A[$key]: ${a[key]}, B[$key]: ${b[key]}');
           return false;
         }
       }
@@ -75,7 +73,11 @@ void main() {
 
   test('can begin chat with plugin without customParams', () async {
     await Livechat.beginChat(
-        'licenseNo', 'groupId', 'visitorName', 'visitorEmail');
+      'licenseNo',
+      groupId: 'groupId',
+      visitorName: 'visitorName',
+      visitorEmail: 'visitorEmail',
+    );
     expect(
       log.any((methodCall) =>
           methodCall.method == 'beginChat' &&
@@ -91,8 +93,13 @@ void main() {
   });
 
   test('can begin chat with plugin with customParams', () async {
-    await Livechat.beginChat('licenseNo', 'groupId', 'visitorName',
-        'visitorEmail', {'organization': 'mastersam.xyz'});
+    await Livechat.beginChat(
+      'licenseNo',
+      groupId: 'groupId',
+      visitorName: 'visitorName',
+      visitorEmail: 'visitorEmail',
+      customParams: {'organization': 'mastersam.xyz'},
+    );
     expect(
       log.any((methodCall) =>
           methodCall.method == 'beginChat' &&
