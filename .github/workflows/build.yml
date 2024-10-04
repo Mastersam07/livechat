@@ -28,7 +28,7 @@ jobs:
         with:
           flutter-version: ${{ env.flutter_version }}
       - name: Install dependencies
-        run: flutter pub get --no-example
+        run: flutter pub get
       - name: Format code
         run: dart format --dry-run . --set-exit-if-changed
       - name: Lint analysis
