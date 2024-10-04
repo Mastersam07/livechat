@@ -34,24 +34,36 @@ class Livechat {
   static Stream<dynamic> get chatEvents =>
       _eventChannel.receiveBroadcastStream();
 
-  /// Start listening for new messages
+  /// Listen for new messages
   static Stream<String> get newMessages => chatEvents
-      .where((event) => event is Map && event.containsKey('text'))
+      .where((event) => event is Map && event['EventType'] == 'NewMessage')
       .map((event) => event['text'] as String);
 
-  /// Start listening for visibility changes
+  /// Listen for visibility changes
   static Stream<bool> get visibilityChanges => chatEvents
       .where((event) =>
-          event is String && event.contains('onChatWindowVisibilityChanged'))
-      .map((event) => event.endsWith('true'));
+          event is Map && event['EventType'] == 'ChatWindowVisibilityChanged')
+      .map((event) => event['visibility'] as bool);
 
-  /// Start listening for errors
+  /// Listen for errors
   static Stream<Map<String, dynamic>> get errors => chatEvents
-      .where((event) => event is Map && event.containsKey('errorDescription'))
+      .where((event) => event is Map && event['EventType'] == 'Error')
       .map((event) => event as Map<String, dynamic>);
 
-  /// Handle URIs
+  /// Listen for URI handling
   static Stream<String> get uriHandlers => chatEvents
-      .where((event) => event is String && event.contains('handleUri'))
-      .map((event) => event.replaceFirst('handleUri: ', ''));
+      .where((event) => event is Map && event['EventType'] == 'HandleUri')
+      .map((event) => event['uri'] as String);
+
+  /// Listen for file picker activity
+  static Stream<int> get filePickerActivity => chatEvents
+      .where(
+          (event) => event is Map && event['EventType'] == 'FilePickerActivity')
+      .map((event) => event['requestCode'] as int);
+
+  /// Listen for window initialization
+  static Stream<void> get windowInitialized => chatEvents
+      .where(
+          (event) => event is Map && event['EventType'] == 'WindowInitialized')
+      .map((_) => null);
 }

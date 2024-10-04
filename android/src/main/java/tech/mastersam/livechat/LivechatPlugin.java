@@ -112,33 +112,53 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 @Override
                 public void onWindowInitialized() {
                     if (events != null) {
-                        events.success("onWindowInitialized");
+                        HashMap<String, Object> windowData = new HashMap<>();
+                        windowData.put("EventType", "WindowInitialized");
+                        events.success(windowData);
                     }
                 }
 
                 @Override
                 public void onNewMessage(NewMessageModel message, boolean windowVisible) {
-                    // Notify Flutter about the new message
-                    HashMap<String, Object> messageData = new HashMap<>();
-                    messageData.put("text", message.getText());
-                    messageData.put("windowVisible", windowVisible);
-                    events.success(messageData);
+                    if (events != null) {
+                        HashMap<String, Object> messageData = new HashMap<>();
+                        messageData.put("EventType", "NewMessage");
+                        messageData.put("text", message.getText());
+                        messageData.put("windowVisible", windowVisible);
+                        events.success(messageData);
+                    }
                 }
 
                 @Override
                 public void onChatWindowVisibilityChanged(boolean visible) {
                     if (events != null) {
-                        events.success("onChatWindowVisibilityChanged: " + visible);
+                        HashMap<String, Object> visibilityData = new HashMap<>();
+                        visibilityData.put("EventType", "ChatWindowVisibilityChanged");
+                        visibilityData.put("visibility", visible);
+                        events.success(visibilityData);
                     }
                 }
 
                 @Override
                 public void onStartFilePickerActivity(Intent intent, int requestCode) {
+                    if (events != null) {
+                        HashMap<String, Object> eventData = new HashMap<>();
+                        eventData.put("EventType", "FilePickerActivity");
+                        eventData.put("requestCode", requestCode);
+                        events.success(eventData);
+                    }
                     activity.startActivityForResult(intent, requestCode);
                 }
 
                 @Override
                 public void onRequestAudioPermissions(String[] permissions, int requestCode) {
+                    if (events != null) {
+                        HashMap<String, Object> permissionData = new HashMap<>();
+                        permissionData.put("event", "onRequestAudioPermissions");
+                        permissionData.put("permissions", permissions);
+                        permissionData.put("requestCode", requestCode);
+                        events.success(permissionData);
+                    }
                     ActivityCompat.requestPermissions(activity, permissions, requestCode);
                 }
 
@@ -149,19 +169,25 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                         errorData.put("errorType", errorType.toString());
                         errorData.put("errorCode", errorCode);
                         errorData.put("errorDescription", errorDescription);
-                        events.success(errorData);  // Push error event to Flutter
+                        events.success(errorData);
                     }
                     return true; 
                 }
 
                 @Override
                 public boolean handleUri(Uri uri) {
-                     if (events != null) {
-                        events.success("handleUri: " + uri.toString());
+                    if (events != null) {
+                        HashMap<String, Object> uriData = new HashMap<>();
+                        uriData.put("EventType", "HandleUri");
+                        uriData.put("uri", uri.toString());
+                        events.success(uriData);
                     }
                     return true;
                 }
             });
+
+            windowView.initialize();
+            windowView.showChatWindow();
 
             result.success(null);
         } catch (Exception e) {

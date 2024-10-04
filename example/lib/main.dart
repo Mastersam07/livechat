@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:flutter/services.dart';
 import 'package:livechatt/livechatt.dart';
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LiveChat',
-      home: Support(),
+      home: EmbeddedChatWidget(),
     );
   }
 }
@@ -37,17 +40,8 @@ class _SupportState extends State<Support> {
   void initState() {
     super.initState();
     initPlatformState();
-    Livechat.newMessages.listen((message) {
+    Livechat.chatEvents.listen((message) {
       print('New message: $message');
-    });
-    Livechat.visibilityChanges.listen((isVisible) {
-      print('Chat window is visible: $isVisible');
-    });
-    Livechat.errors.listen((error) {
-      print('Error: ${error['errorDescription']}');
-    });
-    Livechat.uriHandlers.listen((uri) {
-      print('Custom URI clicked: $uri');
     });
   }
 
@@ -190,7 +184,6 @@ class _SupportState extends State<Support> {
                   },
                   title: "Start Live Chat",
                 ),
-                // Container(height: 300, child: EmbeddedChatWidget()),
                 // Spacer(),
                 Text('Running on: $_platformVersion\n'),
               ],
@@ -250,33 +243,68 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class EmbeddedChatWidget extends StatelessWidget {
+class EmbeddedChatWidget extends StatefulWidget {
+  @override
+  State<EmbeddedChatWidget> createState() => _EmbeddedChatWidgetState();
+}
+
+class _EmbeddedChatWidgetState extends State<EmbeddedChatWidget> {
+  @override
+  void initState() {
+    super.initState();
+    Livechat.chatEvents.listen((message) {
+      print('New message: $message');
+    });
+    // Livechat.visibilityChanges.listen((isVisible) {
+    //   print('Chat window is visible: $isVisible');
+    // });
+    // Livechat.errors.listen((error) {
+    //   print('Error: ${error['errorDescription']}');
+    // });
+    // Livechat.uriHandlers.listen((uri) {
+    //   print('Custom URI clicked: $uri');
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Embedded LiveChat')),
-      body: AndroidView(
-        viewType: 'embedded_chat_view',
-        creationParams: <String, dynamic>{
-          'licenseNo': '18650673',
-          'groupId': 'group_id',
-          'visitorName': 'visitor_name',
-          'visitorEmail': 'visitor_email',
-        },
-        creationParamsCodec: const StandardMessageCodec(),
+      body: Expanded(
+        // child: PlatformViewLink(
+        //   surfaceFactory: (context, controller) {
+        //     return AndroidViewSurface(
+        //       controller: controller as AndroidViewController,
+        //       gestureRecognizers: const <Factory<
+        //           OneSequenceGestureRecognizer>>{},
+        //       hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+        //     );
+        //   },
+        //   onCreatePlatformView: (params) {
+        //     return PlatformViewsService.initSurfaceAndroidView(
+        //       id: params.id,
+        //       viewType: 'embedded_chat_view',
+        //       layoutDirection: TextDirection.ltr,
+        //       creationParams: <String, dynamic>{
+        //         'licenseNo': '18650673',
+        //       },
+        //       creationParamsCodec: const StandardMessageCodec(),
+        //       onFocus: () {
+        //         params.onFocusChanged(true);
+        //       },
+        //     )
+        //       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+        //       ..create();
+        //   },
+        //   viewType: 'embedded_chat_view',
+        // ),
+        child: AndroidView(
+          viewType: 'embedded_chat_view',
+          creationParams: <String, dynamic>{
+            'licenseNo': '18650673',
+          },
+          creationParamsCodec: const StandardMessageCodec(),
+        ),
       ),
     );
   }
 }
-
-
-// <!-- Start of LiveChat (www.livechat.com) code -->
-// <script>
-//     window.__lc = window.__lc || {};
-//     window.__lc.license = 18650673;
-//     window.__lc.integration_name = "manual_onboarding";
-//     window.__lc.product_name = "livechat";
-//     ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[LiveChatWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.livechatinc.com/tracking.js",t.head.appendChild(n)}};!n.__lc.asyncInit&&e.init(),n.LiveChatWidget=n.LiveChatWidget||e}(window,document,[].slice))
-// </script>
-// <noscript><a href="https://www.livechat.com/chat-with/18650673/" rel="nofollow">Chat with us</a>, powered by <a href="https://www.livechat.com/?welcome" rel="noopener nofollow" target="_blank">LiveChat</a></noscript>
-// <!-- End of LiveChat code -->
