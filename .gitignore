@@ -13,3 +13,4 @@ _docpress/
 #credentials
 credentials.json
 .vscode/
+coverage/

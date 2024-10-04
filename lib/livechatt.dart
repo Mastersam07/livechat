@@ -47,8 +47,11 @@ class Livechat {
 
   /// Listen for errors
   static Stream<Map<String, dynamic>> get errors => chatEvents
-      .where((event) => event is Map && event['EventType'] == 'Error')
-      .map((event) => event as Map<String, dynamic>);
+          .where((event) => event is Map && event['EventType'] == 'Error')
+          .map((event) {
+        final errorEvent = event as Map<Object?, Object?>;
+        return errorEvent.map((key, value) => MapEntry(key.toString(), value));
+      });
 
   /// Listen for URI handling
   static Stream<String> get uriHandlers => chatEvents
@@ -62,8 +65,8 @@ class Livechat {
       .map((event) => event['requestCode'] as int);
 
   /// Listen for window initialization
-  static Stream<void> get windowInitialized => chatEvents
+  static Stream<bool> get windowInitialized => chatEvents
       .where(
           (event) => event is Map && event['EventType'] == 'WindowInitialized')
-      .map((_) => null);
+      .map((_) => true);
 }
