@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+
+import 'src/livechat_widget.dart';
 
 class Livechat {
   static const MethodChannel _channel = const MethodChannel('livechatt');
@@ -73,4 +76,21 @@ class Livechat {
       .where(
           (event) => event is Map && event['EventType'] == 'WindowInitialized')
       .map((_) => true);
+
+  /// Expose the embedded chat widget
+  static Widget embeddedChat({
+    required String licenseNo,
+    String? groupId,
+    String? visitorName,
+    String? visitorEmail,
+    Map<String, String>? customParams,
+  }) {
+    return LivechatEmbedded(
+      licenseNo: licenseNo,
+      groupId: groupId,
+      visitorName: visitorName,
+      visitorEmail: visitorEmail,
+      customParams: customParams,
+    );
+  }
 }

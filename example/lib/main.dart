@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -15,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LiveChat',
-      home: EmbeddedChatWidget(),
+      home: Support(),
     );
   }
 }
@@ -27,7 +26,7 @@ class Support extends StatefulWidget {
 
 class _SupportState extends State<Support> {
   String? _platformVersion = 'Unknown';
-  final licenseNoTextController = TextEditingController(text: '18650673');
+  final licenseNoTextController = TextEditingController();
   final groupIdTextController = TextEditingController();
   final visitorNameTextController = TextEditingController();
   final visitorEmailTextController = TextEditingController();
@@ -181,16 +180,12 @@ class _SupportState extends State<Support> {
                   },
                   title: "Start Live Chat",
                 ),
-                // Spacer(),
                 Text('Running on: $_platformVersion\n'),
               ],
             ),
           ),
         ),
       ),
-      // body: Center(
-      //   child: Text('Running on: $_platformVersion\n'),
-      // ),
     );
   }
 }
@@ -236,41 +231,6 @@ class CustomButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class EmbeddedChatWidget extends StatefulWidget {
-  @override
-  State<EmbeddedChatWidget> createState() => _EmbeddedChatWidgetState();
-}
-
-class _EmbeddedChatWidgetState extends State<EmbeddedChatWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget embeddedView = UiKitView(
-      viewType: 'embedded_chat_view',
-      creationParams: <String, dynamic>{
-        'licenseNo': '18650673',
-      },
-      creationParamsCodec: const StandardMessageCodec(),
-    );
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      embeddedView = AndroidView(
-        viewType: 'embedded_chat_view',
-        creationParams: <String, dynamic>{
-          'licenseNo': '18650673',
-        },
-        creationParamsCodec: const StandardMessageCodec(),
-      );
-    }
-    return Scaffold(
-      body: embeddedView,
     );
   }
 }

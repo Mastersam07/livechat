@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:livechatt/livechatt.dart';
@@ -59,6 +61,61 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, null);
     eventController.close();
+  });
+
+  testWidgets('embeddedChat renders correctly on Android',
+      (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+    await tester.pumpWidget(MaterialApp(
+      home: Livechat.embeddedChat(
+        licenseNo: '18650673',
+        visitorName: 'John Doe',
+        visitorEmail: 'john@example.com',
+      ),
+    ));
+
+    expect(find.byType(AndroidView), findsOneWidget);
+
+    // Clean up after the test
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('embeddedChat renders correctly on iOS',
+      (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+    await tester.pumpWidget(MaterialApp(
+      home: Livechat.embeddedChat(
+        licenseNo: '18650673',
+        visitorName: 'John Doe',
+        visitorEmail: 'john@example.com',
+      ),
+    ));
+
+    expect(find.byType(UiKitView), findsOneWidget);
+
+    // Clean up after the test
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets(
+      'embeddedChat shows unsupported message on other platforms(Fuchsia)',
+      (WidgetTester tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+
+    await tester.pumpWidget(MaterialApp(
+      home: Livechat.embeddedChat(
+        licenseNo: '18650673',
+        visitorName: 'Unknown',
+        visitorEmail: 'unknown@example.com',
+      ),
+    ));
+
+    expect(find.text('Platform not supported'), findsOneWidget);
+
+    // Clean up after the test
+    debugDefaultTargetPlatformOverride = null;
   });
 
   test('getPlatformVersion from plugin', () async {

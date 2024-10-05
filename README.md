@@ -102,35 +102,21 @@ For more info, please, refer to the `main.dart` in the example.
 
 ### Embedded Chat Views
 
-> Experimental
-
 The package now supports embedded views for custom positioning within your app’s layout:
 
-#### Android
 ```dart
-AndroidView(
-  viewType: 'embedded_chat_view',
-  creationParams: <String, dynamic>{
-    'licenseNo': 'your_license',
-    'groupId': 'group_id',
-    'visitorName': 'visitor_name',
-    'visitorEmail': 'visitor_email',
-  },
-  creationParamsCodec: const StandardMessageCodec(),
-)
-```
 
-#### iOS
-```dart
-UiKitView(
-  viewType: 'embedded_chat_view',
-  creationParams: <String, dynamic>{
-    'licenseNo': 'your_license',
-    'groupId': 'group_id',
-    'visitorName': 'visitor_name',
-    'visitorEmail': 'visitor_email',
-  },
-  creationParamsCodec: const StandardMessageCodec(),
+var cmap = <String, String>{
+    'org': 'organizationTextController.text',
+    'position': 'positionTextController.text'
+};
+
+Livechat.embeddedChat(
+  licenseNo: 'your_license',
+  groupId: 'group_id',
+  visitorEmail: 'visitor_email',
+  visitorName: 'visitor_name',
+  customParams: cmap,
 )
 ```
 
