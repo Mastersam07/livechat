@@ -7,6 +7,9 @@ public class SwiftLivechatPlugin: NSObject, FlutterPlugin {
     let channel = FlutterMethodChannel(name: "livechatt", binaryMessenger: registrar.messenger())
     let instance = SwiftLivechatPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
+
+    let factory = EmbeddedChatViewFactory(messenger: registrar.messenger())
+    registrar.register(factory, withId: "embedded_chat_view")
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -47,6 +50,10 @@ public class SwiftLivechatPlugin: NSObject, FlutterPlugin {
             }
 
             LiveChat.presentChat()
+            result(nil)
+        
+        case "clearSession":
+            LiveChat.clearSession()
             result(nil)
 
         default:

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'LiveChat',
-      home: Support(),
+      home: EmbeddedChatWidget(),
     );
   }
 }
@@ -248,59 +249,28 @@ class _EmbeddedChatWidgetState extends State<EmbeddedChatWidget> {
   @override
   void initState() {
     super.initState();
-    Livechat.chatEvents.listen((message) {
-      print('New message: $message');
-    });
-    // Livechat.visibilityChanges.listen((isVisible) {
-    //   print('Chat window is visible: $isVisible');
-    // });
-    // Livechat.errors.listen((error) {
-    //   print('Error: ${error['errorDescription']}');
-    // });
-    // Livechat.uriHandlers.listen((uri) {
-    //   print('Custom URI clicked: $uri');
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget embeddedView = UiKitView(
+      viewType: 'embedded_chat_view',
+      creationParams: <String, dynamic>{
+        'licenseNo': '18650673',
+      },
+      creationParamsCodec: const StandardMessageCodec(),
+    );
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      embeddedView = AndroidView(
+        viewType: 'embedded_chat_view',
+        creationParams: <String, dynamic>{
+          'licenseNo': '18650673',
+        },
+        creationParamsCodec: const StandardMessageCodec(),
+      );
+    }
     return Scaffold(
-      body: Expanded(
-        // child: PlatformViewLink(
-        //   surfaceFactory: (context, controller) {
-        //     return AndroidViewSurface(
-        //       controller: controller as AndroidViewController,
-        //       gestureRecognizers: const <Factory<
-        //           OneSequenceGestureRecognizer>>{},
-        //       hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-        //     );
-        //   },
-        //   onCreatePlatformView: (params) {
-        //     return PlatformViewsService.initSurfaceAndroidView(
-        //       id: params.id,
-        //       viewType: 'embedded_chat_view',
-        //       layoutDirection: TextDirection.ltr,
-        //       creationParams: <String, dynamic>{
-        //         'licenseNo': '18650673',
-        //       },
-        //       creationParamsCodec: const StandardMessageCodec(),
-        //       onFocus: () {
-        //         params.onFocusChanged(true);
-        //       },
-        //     )
-        //       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-        //       ..create();
-        //   },
-        //   viewType: 'embedded_chat_view',
-        // ),
-        child: AndroidView(
-          viewType: 'embedded_chat_view',
-          creationParams: <String, dynamic>{
-            'licenseNo': '18650673',
-          },
-          creationParamsCodec: const StandardMessageCodec(),
-        ),
-      ),
+      body: embeddedView,
     );
   }
 }
