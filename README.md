@@ -14,7 +14,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechatt: ^1.5.0
+  livechatt: ^1.5.1
 ```
 
 ### ⚡️ Import

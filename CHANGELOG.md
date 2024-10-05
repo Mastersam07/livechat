@@ -1,6 +1,6 @@
 # ChangeLog for livechat
 
-## 1.5.0
+## 1.5.1
 
 * Embedded chat views support: Users can now embed chat windows within their Flutter app for better control over the layout.
 * Added support for streaming events like NewMessage, ChatWindowVisibilityChanged, Error, HandleUri, and FilePickerActivity.
