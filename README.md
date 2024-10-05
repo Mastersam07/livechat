@@ -14,10 +14,7 @@ A livechat package for embedding mobile chat window in your mobile application.
 
 ```yaml
 dependencies:
-  livechatt:
-    git:
-      url: git@github.com:mastersam07/livechat.git
-      ref: master
+  livechatt: ^1.5.0
 ```
 
 ### ⚡️ Import
@@ -106,12 +103,26 @@ For more info, please, refer to the `main.dart` in the example.
 ### Embedded Chat Views
 
 > Experimental
-> Android only
 
 The package now supports embedded views for custom positioning within your app’s layout:
 
+#### Android
 ```dart
 AndroidView(
+  viewType: 'embedded_chat_view',
+  creationParams: <String, dynamic>{
+    'licenseNo': 'your_license',
+    'groupId': 'group_id',
+    'visitorName': 'visitor_name',
+    'visitorEmail': 'visitor_email',
+  },
+  creationParamsCodec: const StandardMessageCodec(),
+)
+```
+
+#### iOS
+```dart
+UiKitView(
   viewType: 'embedded_chat_view',
   creationParams: <String, dynamic>{
     'licenseNo': 'your_license',
