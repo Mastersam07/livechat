@@ -32,3 +32,5 @@ jobs:
 
       - name: Publish
         run: dart pub publish --force
+        with:
+          environment: pub.dev
