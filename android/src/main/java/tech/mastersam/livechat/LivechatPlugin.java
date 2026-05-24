@@ -44,6 +44,8 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
     private Activity activity;
     private ChatWindowView windowView;
     private EventChannel.EventSink events;
+    private boolean isInitialized = false;
+    private ChatWindowConfiguration cachedConfig;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -80,6 +82,18 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 break;
             case "beginChat":
                 handleBeginChat(call, result);
+                break;
+            case "initializeChat":
+                handleInitializeChat(call, result);
+                break;
+            case "showPreloadedChat":
+                handleShowPreloadedChat(result);
+                break;
+            case "hideChat":
+                handleHideChat(result);
+                break;
+            case "isInitialized":
+                result.success(isInitialized);
                 break;
             case "clearSession":
                 clearChatSession(result);
@@ -203,6 +217,159 @@ public class LivechatPlugin implements FlutterPlugin, MethodCallHandler, Activit
                 .setVisitorEmail(visitorEmail)
                 .setCustomParams(customParams)
                 .build();
+    }
+
+    private void handleInitializeChat(@NonNull MethodCall call, @NonNull Result result) {
+        final String licenseNo = call.argument("licenseNo");
+        final HashMap<String, String> customParams = call.argument("customParams");
+        final String groupId = call.argument("groupId");
+        final String visitorName = call.argument("visitorName");
+        final String visitorEmail = call.argument("visitorEmail");
+
+        if (licenseNo == null || licenseNo.trim().isEmpty()) {
+            result.error("LICENSE_ERROR", "License number cannot be empty", null);
+            return;
+        }
+
+        if (activity == null) {
+            result.error("ACTIVITY_ERROR", "Activity is not attached", null);
+            return;
+        }
+
+        try {
+            // Build and cache configuration
+            cachedConfig = buildChatConfig(licenseNo, groupId, visitorName, visitorEmail, customParams);
+
+            // Create and initialize ChatWindowView without showing it
+            windowView = ChatWindowUtils.createAndAttachChatWindowInstance(activity);
+            windowView.setConfiguration(cachedConfig);
+
+            // Set up the event listener
+            windowView.setEventsListener(createEventListener());
+
+            // Initialize the WebView (this loads the chat but doesn't show it)
+            windowView.initialize();
+
+            isInitialized = true;
+            result.success(null);
+        } catch (Exception e) {
+            isInitialized = false;
+            result.error("CHAT_INIT_ERROR", "Failed to initialize chat window", e.getMessage());
+        }
+    }
+
+    private void handleShowPreloadedChat(@NonNull Result result) {
+        if (activity == null) {
+            result.error("ACTIVITY_ERROR", "Activity is not attached", null);
+            return;
+        }
+
+        try {
+            if (isInitialized && windowView != null) {
+                // Chat is already initialized, just show it
+                windowView.showChatWindow();
+                result.success(null);
+            } else {
+                // Fallback: chat not initialized, return error
+                result.error("NOT_INITIALIZED", "Chat is not initialized. Call initializeChat first.", null);
+            }
+        } catch (Exception e) {
+            result.error("SHOW_CHAT_ERROR", "Failed to show chat window", e.getMessage());
+        }
+    }
+
+    private void handleHideChat(@NonNull Result result) {
+        try {
+            if (windowView != null) {
+                windowView.hideChatWindow();
+                result.success(null);
+            } else {
+                result.error("NO_CHAT_WINDOW", "Chat window not found", null);
+            }
+        } catch (Exception e) {
+            result.error("HIDE_CHAT_ERROR", "Failed to hide chat window", e.getMessage());
+        }
+    }
+
+    private ChatWindowEventsListener createEventListener() {
+        return new ChatWindowEventsListener() {
+            @Override
+            public void onWindowInitialized() {
+                if (events != null) {
+                    HashMap<String, Object> windowData = new HashMap<>();
+                    windowData.put("EventType", "WindowInitialized");
+                    events.success(windowData);
+                }
+            }
+
+            @Override
+            public void onNewMessage(NewMessageModel message, boolean windowVisible) {
+                if (events != null) {
+                    HashMap<String, Object> messageData = new HashMap<>();
+                    messageData.put("EventType", "NewMessage");
+                    messageData.put("text", message.getText());
+                    messageData.put("windowVisible", windowVisible);
+                    events.success(messageData);
+                }
+            }
+
+            @Override
+            public void onChatWindowVisibilityChanged(boolean visible) {
+                if (events != null) {
+                    HashMap<String, Object> visibilityData = new HashMap<>();
+                    visibilityData.put("EventType", "ChatWindowVisibilityChanged");
+                    visibilityData.put("visibility", visible);
+                    events.success(visibilityData);
+                }
+            }
+
+            @Override
+            public void onStartFilePickerActivity(Intent intent, int requestCode) {
+                if (events != null) {
+                    HashMap<String, Object> eventData = new HashMap<>();
+                    eventData.put("EventType", "FilePickerActivity");
+                    eventData.put("requestCode", requestCode);
+                    events.success(eventData);
+                }
+                activity.startActivityForResult(intent, requestCode);
+            }
+
+            @Override
+            public void onRequestAudioPermissions(String[] permissions, int requestCode) {
+                if (events != null) {
+                    HashMap<String, Object> permissionData = new HashMap<>();
+                    permissionData.put("event", "onRequestAudioPermissions");
+                    permissionData.put("permissions", permissions);
+                    permissionData.put("requestCode", requestCode);
+                    events.success(permissionData);
+                }
+                ActivityCompat.requestPermissions(activity, permissions, requestCode);
+            }
+
+            @Override
+            public boolean onError(ChatWindowErrorType errorType, int errorCode, String errorDescription) {
+                if (events != null) {
+                    HashMap<String, Object> errorData = new HashMap<>();
+                    errorData.put("EventType", "Error");
+                    errorData.put("errorType", errorType.toString());
+                    errorData.put("errorCode", errorCode);
+                    errorData.put("errorDescription", errorDescription);
+                    events.success(errorData);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean handleUri(Uri uri) {
+                if (events != null) {
+                    HashMap<String, Object> uriData = new HashMap<>();
+                    uriData.put("EventType", "HandleUri");
+                    uriData.put("uri", uri.toString());
+                    events.success(uriData);
+                }
+                return true;
+            }
+        };
     }
 
     private void clearChatSession(Result result) {

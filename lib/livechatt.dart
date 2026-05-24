@@ -32,6 +32,45 @@ class Livechat {
     });
   }
 
+  /// Initialize LiveChat without showing UI
+  /// This preloads the chat WebView for instant display later
+  /// Call this method early (e.g., at app start or when user opens menu)
+  static Future<void> initializeChat(
+    String licenseNo, {
+    String? groupId,
+    String? visitorName,
+    String? visitorEmail,
+    Map<String, String>? customParams,
+  }) async {
+    await _channel.invokeMethod('initializeChat', <String, dynamic>{
+      'licenseNo': licenseNo,
+      'groupId': groupId,
+      'visitorName': visitorName,
+      'visitorEmail': visitorEmail,
+      'customParams': customParams,
+    });
+  }
+
+  /// Show preloaded chat instantly
+  /// The chat must be initialized first via initializeChat()
+  /// If not initialized, this will throw an error
+  static Future<void> showPreloadedChat() async {
+    await _channel.invokeMethod('showPreloadedChat');
+  }
+
+  /// Hide the chat window without destroying it
+  /// The chat remains initialized and can be shown again instantly
+  static Future<void> hideChat() async {
+    await _channel.invokeMethod('hideChat');
+  }
+
+  /// Check if chat has been initialized
+  /// Returns true if initializeChat() was called successfully
+  static Future<bool> get isInitialized async {
+    final bool? initialized = await _channel.invokeMethod('isInitialized');
+    return initialized ?? false;
+  }
+
   /// Clear chat session
   static Future<void> clearSession() async {
     await _channel.invokeMethod('clearSession');
