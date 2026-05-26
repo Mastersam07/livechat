@@ -71,7 +71,7 @@ end
 
 ### Dart Usage
 
-- Regular usage
+#### Regular Usage
 
 ```dart
 onPressed: (){
@@ -79,7 +79,7 @@ onPressed: (){
 },
 ```
 
-- Cases where there are custom parameters
+#### With Custom Parameters
 
 ```dart
 var cmap = <String, String>{
@@ -96,6 +96,63 @@ onPressed: (){
       customParams: cmap,
     );
 },
+```
+
+#### Preloaded Chat (Instant Display)
+
+For instant chat opening, you can preload the chat WebView in advance:
+
+```dart
+// Initialize chat early (e.g., in initState or when opening menu)
+// This loads the WebView in background without showing UI
+@override
+void initState() {
+  super.initState();
+
+  // Delay initialization to avoid blocking UI
+  Future.delayed(Duration(seconds: 3), () async {
+    await Livechat.initializeChat(
+      LICENSE_NO,
+      groupId: GROUP_ID,
+      visitorName: VISITOR_NAME,
+      visitorEmail: VISITOR_EMAIL,
+      customParams: customParams,
+    );
+  });
+}
+
+// Later, show the preloaded chat instantly
+onPressed: () async {
+  // Check if chat is initialized
+  bool initialized = await Livechat.isInitialized;
+
+  if (initialized) {
+    // Show preloaded chat - opens instantly!
+    await Livechat.showPreloadedChat();
+  } else {
+    // Fallback to regular beginChat
+    await Livechat.beginChat(LICENSE_NO);
+  }
+},
+```
+
+#### Hide Chat
+
+```dart
+// Hide chat window without destroying it
+await Livechat.hideChat();
+
+// Show it again instantly
+await Livechat.showPreloadedChat();
+```
+
+#### Check Initialization Status
+
+```dart
+bool initialized = await Livechat.isInitialized;
+if (initialized) {
+  print('Chat is ready for instant display');
+}
 ```
 
 For more info, please, refer to the `main.dart` in the example.

@@ -23,6 +23,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'tech.mastersam.livechat'
     compileSdkVersion 34
 
     defaultConfig {

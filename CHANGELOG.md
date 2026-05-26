@@ -1,5 +1,16 @@
 # ChangeLog for livechat
 
+## 1.6.0
+
+* **NEW**: Preloaded chat support for instant display
+  * Added `initializeChat()` - Initialize LiveChat WebView in background without showing UI
+  * Added `showPreloadedChat()` - Show preloaded chat instantly (< 500ms)
+  * Added `hideChat()` - Hide chat window without destroying it
+  * Added `isInitialized` getter - Check if chat is ready for instant display
+* **Performance**: Reduces chat opening time from 3-5 seconds to < 500ms when using preloaded chat
+* **Compatibility**: Fully backward compatible - existing `beginChat()` works as before
+* **Platform**: Supports both Android and iOS
+
 ## 1.5.1
 
 * Embedded chat views support: Users can now embed chat windows within their Flutter app for better control over the layout.
